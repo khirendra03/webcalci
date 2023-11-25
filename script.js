@@ -4,90 +4,96 @@ let operator = '';
 let firstOperand = '';
 let history = ''; // Variable to store calculation history
 
-// Update the display with the current value
+// Function to update the display
 function updateDisplay() {
+    // Update the main display
     document.getElementById('display').innerText = displayValue;
+    // Update the history display
     document.getElementById('history').innerText = history;
 }
 
-// Append a number to the display
-function appendNumber(number) {
-    // Check if the display is at its initial state or after a calculation
+// Function to handle numeric input
+function handleNumericInput(number) {
     if (displayValue === '0' || operator === '=') {
+        // If the display is at its initial state or after a calculation, replace the current value
         displayValue = number;
     } else {
+        // Otherwise, append the number to the current value
         displayValue += number;
     }
     updateDisplay();
 }
 
-// Append a decimal point to the display
-function appendDecimal() {
-    // Check if the current display value already contains a decimal point
-    if (!displayValue.includes('.')) {
-        displayValue += '.';
-        updateDisplay();
-    }
-}
-
-// Set the operator for the calculation
-function setOperator(op) {
-    // Check if there is a previous operator and operand for ongoing calculations
+// Function to handle operator input
+function handleOperatorInput(op) {
     if (operator !== '=' && firstOperand !== '') {
+        // If there's a previous operator and operand, calculate the result
         calculate();
     }
-    // Set the new operator and store the current display value as the first operand
+    // Set the new operator and update history
     operator = op;
     history += `${firstOperand} ${operator} `;
+    // Set the current display value as the first operand and reset the display
     firstOperand = displayValue;
     displayValue = '0';
     updateDisplay();
 }
 
-// Clear the display and reset calculator state
+// Function to handle decimal input
+function appendDecimal() {
+    if (!displayValue.includes('.')) {
+        // If the current value doesn't already contain a decimal point, append it
+        displayValue += '.';
+        updateDisplay();
+    }
+}
+
+// Function to clear the display and reset calculator state
 function clearDisplay() {
+    // Reset all calculator variables and clear the history
     displayValue = '0';
     operator = '';
     firstOperand = '';
-    history = ''; // Clear history on display clear
+    history = '';
     updateDisplay();
 }
 
-// Toggle the sign of the current number
+// Function to toggle the sign of the current number
 function toggleSign() {
+    // Multiply the current value by -1 to toggle the sign
     displayValue = (parseFloat(displayValue) * -1).toString();
     updateDisplay();
 }
 
-// Calculate the percentage of the current number
+// Function to calculate the percentage of the current number
 function percentage() {
+    // Divide the current value by 100 to get the percentage
     displayValue = (parseFloat(displayValue) / 100).toString();
     updateDisplay();
 }
 
-// Perform the calculation based on the current operator
-function operateOnOperands(operation) {
-    return operation(parseFloat(firstOperand), parseFloat(displayValue));
-}
-
-// Calculate and display the result
+// Function to perform the calculation based on the current operator
 function calculate() {
     try {
-        if (operator === '+') {
-            displayValue = operateOnOperands((a, b) => a + b).toString();
-        } else if (operator === '-') {
-            displayValue = operateOnOperands((a, b) => a - b).toString();
-        } else if (operator === '*') {
-            displayValue = operateOnOperands((a, b) => a * b).toString();
-        } else if (operator === '/') {
-            // Check for division by zero
-            if (parseFloat(displayValue) !== 0) {
-                displayValue = operateOnOperands((a, b) => a / b).toString();
-            } else {
-                // Display an error message for division by zero
-                displayValue = 'Error: Division by zero';
-            }
+        switch (operator) {
+            case '+':
+                displayValue = operateOnOperands((a, b) => a + b).toString();
+                break;
+            case '-':
+                displayValue = operateOnOperands((a, b) => a - b).toString();
+                break;
+            case '*':
+                displayValue = operateOnOperands((a, b) => a * b).toString();
+                break;
+            case '/':
+                if (parseFloat(displayValue) !== 0) {
+                    displayValue = operateOnOperands((a, b) => a / b).toString();
+                } else {
+                    displayValue = 'Error: Division by zero';
+                }
+                break;
         }
+
         // Update history with the calculation
         history += `${firstOperand} ${operator} ${parseFloat(displayValue)} = `;
         // Set the operator to '=' to indicate the end of the current calculation
@@ -106,9 +112,9 @@ function handleKeyPress(event) {
 
     // Check for numeric keys
     if (/\d/.test(key)) {
-        appendNumber(key);
+        handleNumericInput(key);
     } else if (['+', '-', '*', '/'].includes(key)) {
-        setOperator(key);
+        handleOperatorInput(key);
     } else if (key === '.' || key === ',') {
         appendDecimal();
     } else if (key === 'Enter') {
