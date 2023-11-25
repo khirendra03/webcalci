@@ -54,7 +54,7 @@ function calculate() {
         if (parseFloat(displayValue) !== 0) {
             displayValue = operateOnOperands((a, b) => a / b);
         } else {
-            displayValue = 'Error';
+            displayValue = 'Error: Division by zero';
         }
     }
     operator = '=';
