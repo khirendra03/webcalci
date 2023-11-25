@@ -20,6 +20,16 @@ body {
     background-color: #f0f0f0;
 }
 
+.history {
+    grid-column: span 4;
+    text-align: right;
+    padding: 15px;
+    font-size: 1em;
+    background-color: #eee;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+
 .display {
     grid-column: span 4;
     text-align: right;

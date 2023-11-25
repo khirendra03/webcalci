@@ -2,10 +2,12 @@
 let displayValue = '0';
 let operator = '';
 let firstOperand = '';
+let history = ''; // Variable to store calculation history
 
 // Update the display with the current value
 function updateDisplay() {
     document.getElementById('display').innerText = displayValue;
+    document.getElementById('history').innerText = history;
 }
 
 // Append a number to the display
@@ -36,6 +38,7 @@ function setOperator(op) {
     }
     // Set the new operator and store the current display value as the first operand
     operator = op;
+    history += `${firstOperand} ${operator} `;
     firstOperand = displayValue;
     displayValue = '0';
     updateDisplay();
@@ -46,6 +49,7 @@ function clearDisplay() {
     displayValue = '0';
     operator = '';
     firstOperand = '';
+    history = ''; // Clear history on display clear
     updateDisplay();
 }
 
@@ -84,6 +88,8 @@ function calculate() {
                 displayValue = 'Error: Division by zero';
             }
         }
+        // Update history with the calculation
+        history += `${firstOperand} ${operator} ${parseFloat(displayValue)} = `;
         // Set the operator to '=' to indicate the end of the current calculation
         operator = '=';
         updateDisplay();
