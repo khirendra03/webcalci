@@ -7,26 +7,39 @@
     <title>Windows Calculator</title>
 </head>
 <body>
+    <!-- Calculator container -->
     <div class="calculator">
+        <!-- Display area -->
         <div class="display" id="display">0</div>
+        <!-- Functional buttons -->
         <button class="function" onclick="clearDisplay()">C</button>
         <button class="function" onclick="toggleSign()">+/-</button>
         <button class="function" onclick="percentage()">%</button>
+        <!-- Operator buttons -->
         <button class="operator" onclick="setOperator('/')">/</button>
+        <!-- Number buttons -->
         <button class="number" onclick="appendNumber('7')">7</button>
         <button class="number" onclick="appendNumber('8')">8</button>
         <button class="number" onclick="appendNumber('9')">9</button>
+        <!-- Operator buttons -->
         <button class="operator" onclick="setOperator('*')">*</button>
+        <!-- Number buttons -->
         <button class="number" onclick="appendNumber('4')">4</button>
         <button class="number" onclick="appendNumber('5')">5</button>
         <button class="number" onclick="appendNumber('6')">6</button>
+        <!-- Operator buttons -->
         <button class="operator" onclick="setOperator('-')">-</button>
+        <!-- Number buttons -->
         <button class="number" onclick="appendNumber('1')">1</button>
         <button class="number" onclick="appendNumber('2')">2</button>
         <button class="number" onclick="appendNumber('3')">3</button>
+        <!-- Operator buttons -->
         <button class="operator" onclick="setOperator('+')">+</button>
+        <!-- Zero button -->
         <button class="zero" onclick="appendNumber('0')">0</button>
+        <!-- Decimal button -->
         <button class="decimal" onclick="appendDecimal()">.</button>
+        <!-- Equals button -->
         <button class="equals" onclick="calculate()">=</button>
     </div>
     <script src="script.js"></script>

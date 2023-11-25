@@ -10,6 +10,7 @@ function updateDisplay() {
 
 // Append a number to the display
 function appendNumber(number) {
+    // Check if the display is at its initial state or after a calculation
     if (displayValue === '0' || operator === '=') {
         displayValue = number;
     } else {
@@ -20,6 +21,7 @@ function appendNumber(number) {
 
 // Append a decimal point to the display
 function appendDecimal() {
+    // Check if the current display value already contains a decimal point
     if (!displayValue.includes('.')) {
         displayValue += '.';
         updateDisplay();
@@ -28,9 +30,11 @@ function appendDecimal() {
 
 // Set the operator for the calculation
 function setOperator(op) {
+    // Check if there is a previous operator and operand for ongoing calculations
     if (operator !== '=' && firstOperand !== '') {
         calculate();
     }
+    // Set the new operator and store the current display value as the first operand
     operator = op;
     firstOperand = displayValue;
     displayValue = '0';
@@ -45,35 +49,56 @@ function clearDisplay() {
     updateDisplay();
 }
 
+// Toggle the sign of the current number
+function toggleSign() {
+    displayValue = (parseFloat(displayValue) * -1).toString();
+    updateDisplay();
+}
+
+// Calculate the percentage of the current number
+function percentage() {
+    displayValue = (parseFloat(displayValue) / 100).toString();
+    updateDisplay();
+}
+
 // Perform the calculation based on the current operator
 function operateOnOperands(operation) {
-    return operation(parseFloat(firstOperand), parseFloat(displayValue)).toString();
+    return operation(parseFloat(firstOperand), parseFloat(displayValue));
 }
 
 // Calculate and display the result
 function calculate() {
-    if (operator === '+') {
-        displayValue = operateOnOperands((a, b) => a + b);
-    } else if (operator === '-') {
-        displayValue = operateOnOperands((a, b) => a - b);
-    } else if (operator === '*') {
-        displayValue = operateOnOperands((a, b) => a * b);
-    } else if (operator === '/') {
-        // Check for division by zero
-        if (parseFloat(displayValue) !== 0) {
-            displayValue = operateOnOperands((a, b) => a / b);
-        } else {
-            displayValue = 'Error: Division by zero';
+    try {
+        if (operator === '+') {
+            displayValue = operateOnOperands((a, b) => a + b).toString();
+        } else if (operator === '-') {
+            displayValue = operateOnOperands((a, b) => a - b).toString();
+        } else if (operator === '*') {
+            displayValue = operateOnOperands((a, b) => a * b).toString();
+        } else if (operator === '/') {
+            // Check for division by zero
+            if (parseFloat(displayValue) !== 0) {
+                displayValue = operateOnOperands((a, b) => a / b).toString();
+            } else {
+                // Display an error message for division by zero
+                displayValue = 'Error: Division by zero';
+            }
         }
+        // Set the operator to '=' to indicate the end of the current calculation
+        operator = '=';
+        updateDisplay();
+    } catch (error) {
+        // Display an error message for any other calculation errors
+        displayValue = 'Error';
+        updateDisplay();
     }
-    operator = '=';
-    updateDisplay();
 }
 
-// Handle keyboard input
+// Handle keyboard key press events for calculator input
 function handleKeyPress(event) {
     const key = event.key;
 
+    // Check for numeric keys
     if (/\d/.test(key)) {
         appendNumber(key);
     } else if (['+', '-', '*', '/'].includes(key)) {
@@ -87,8 +112,8 @@ function handleKeyPress(event) {
     }
 }
 
-// Add event listener for keyboard input
+// Add event listener for keyboard key presses
 document.addEventListener('keydown', handleKeyPress);
 
-// Initialize display
+// Initial display update
 updateDisplay();
